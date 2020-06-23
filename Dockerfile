@@ -1,6 +1,6 @@
 FROM node:7.10.0-alpine
 
-ARG VERSION=3.7.2
+ARG VERSION=5.0.10
 
 RUN apk --no-cache add bash ca-certificates curl g++ git make openssl python tini
 
@@ -12,9 +12,11 @@ RUN curl -Lo /tmp/adldap.tar.gz https://github.com/auth0/ad-ldap-connector/archi
 
 RUN cd /opt/auth0-adldap && \
     npm install && \
+    mkdir -p /opt/auth0-adldap/certs  && \
     chown -R node /opt/auth0-adldap /var/lib/data/auth0-adldap && \
     npm cache clean && \
     rm -rf /tmp/* /var/cache/apk/*
+
 
 # Copy app
 COPY ./scripts/entrypoint.sh /opt/auth0-adldap
